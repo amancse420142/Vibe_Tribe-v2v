@@ -1,0 +1,110 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-darkBg: #0A0413;
+  --color-cardBg: rgba(21, 9, 38, 0.75);
+  --color-primary: #D946EF;
+  --color-secondary: #A855F7;
+  --color-accent: #EC4899;
+  --color-lightPurple: #F5E8FF;
+  
+  --font-sans: 'Outfit', 'Inter', sans-serif;
+  
+  --shadow-neonPrimary: 0 0 20px rgba(217, 70, 239, 0.5);
+  --shadow-neonAccent: 0 0 20px rgba(236, 72, 153, 0.5);
+  --shadow-glass: 0 8px 32px 0 rgba(21, 9, 38, 0.6);
+}
+
+@utility glass-card {
+  background: rgba(21, 9, 38, 0.75);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(217, 70, 239, 0.2);
+  box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.6);
+  border-radius: 1.5rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@utility glass-card-hover {
+  &:hover {
+    border-color: rgba(236, 72, 153, 0.5);
+    box-shadow: 0 12px 45px 0 rgba(217, 70, 239, 0.35);
+    transform: translateY(-3px);
+  }
+}
+
+@utility glow-btn {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    box-shadow: 0 0 20px rgba(236, 72, 153, 0.6);
+    transform: scale(1.02);
+  }
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
+    transition: 0.5s;
+  }
+  
+  &:hover::before {
+    left: 100%;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0A0413;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #251240;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #D946EF;
+}
+
+/* Skills Checklist Card Custom Scrollbar */
+.skills-scroller::-webkit-scrollbar {
+  width: 4px;
+}
+
+.skills-scroller::-webkit-scrollbar-track {
+  background: rgba(21, 9, 38, 0.4);
+  border-radius: 4px;
+}
+
+.skills-scroller::-webkit-scrollbar-thumb {
+  background: rgba(217, 70, 239, 0.55); /* theme fuchsia */
+  border-radius: 4px;
+}
+
+.skills-scroller::-webkit-scrollbar-thumb:hover {
+  background: #EC4899; /* theme hot pink */
+}
+
+body {
+  background-color: #0A0413;
+  color: #ffffff;
+  overflow-x: hidden;
+}
