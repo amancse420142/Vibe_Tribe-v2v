@@ -246,7 +246,7 @@ function App() {
                   : 'bg-cardBg/40 border-white/5 text-gray-400 hover:text-white hover:border-white/10'
               }`}
             >
-              <FolderKanban className="w-4 h-4 text-primary" />
+              <Compass className="w-4 h-4 text-primary" />
               Workspace
             </button>
             <button
@@ -262,6 +262,17 @@ function App() {
             >
               <User className="w-4 h-4 text-accent" />
               HER Profile
+            </button>
+            <button
+              onClick={() => setActiveTab('projects')}
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold border transition-all ${
+                activeTab === 'projects'
+                  ? 'bg-gradient-to-r from-primary/30 to-accent/20 border-primary text-white shadow-neonPrimary/30'
+                  : 'bg-cardBg/40 border-white/5 text-gray-400 hover:text-white hover:border-white/10'
+              }`}
+            >
+              <FolderKanban className="w-4 h-4 text-secondary" />
+              MyProjects
             </button>
           </nav>
         </div>
@@ -704,7 +715,86 @@ function App() {
               </motion.div>
             )}
 
+            {/* 3. MYPROJECTS VIEW */}
+            {activeTab === 'projects' && (
+              <motion.div
+                key="projects-view"
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -15 }}
+                transition={{ duration: 0.4 }}
+                className="w-full space-y-6 text-left"
+              >
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
+                  
+                  {/* Project 1 */}
+                  <div className="glass-card p-6 border-primary/20 flex flex-col justify-between space-y-5">
+                    <div className="space-y-2">
+                      <span className="px-2 py-0.5 rounded bg-primary/10 text-primary border border-primary/20 text-[10px] font-mono font-bold uppercase">Active • 85%</span>
+                      <h3 className="text-base font-extrabold text-white">Neural Synapse Bridge</h3>
+                      <p className="text-xs text-gray-400 leading-relaxed">Deep-learning brain-computer interface mapping cognitive signals into real-time speech synthesis patterns.</p>
+                    </div>
+                    <div className="space-y-3 pt-2">
+                      <div className="flex flex-wrap gap-1.5">
+                        <span className="text-[10px] font-mono bg-white/5 border border-white/10 px-2 py-0.5 rounded text-gray-300">PyTorch</span>
+                        <span className="text-[10px] font-mono bg-white/5 border border-white/10 px-2 py-0.5 rounded text-gray-300">EEG Signals</span>
+                        <span className="text-[10px] font-mono bg-white/5 border border-white/10 px-2 py-0.5 rounded text-gray-300">Python</span>
+                      </div>
+                      <div className="w-full bg-darkBg h-1.5 rounded-full overflow-hidden border border-white/5">
+                        <div className="bg-primary h-full rounded-full" style={{ width: '85%' }} />
+                      </div>
+                    </div>
+                  </div>
 
+                  {/* Project 2 */}
+                  <div className="glass-card p-6 border-accent/20 flex flex-col justify-between space-y-5">
+                    <div className="space-y-2">
+                      <span className="px-2 py-0.5 rounded bg-accent/10 text-accent border border-accent/20 text-[10px] font-mono font-bold uppercase">Review • 40%</span>
+                      <h3 className="text-base font-extrabold text-white">Retinal Quantum Sensor</h3>
+                      <p className="text-xs text-gray-400 leading-relaxed">Sub-dermal quantum photovoltaic sensor detecting photons at ultra-low single-wavelength efficiency thresholds.</p>
+                    </div>
+                    <div className="space-y-3 pt-2">
+                      <div className="flex flex-wrap gap-1.5">
+                        <span className="text-[10px] font-mono bg-white/5 border border-white/10 px-2 py-0.5 rounded text-gray-300">Quantum</span>
+                        <span className="text-[10px] font-mono bg-white/5 border border-white/10 px-2 py-0.5 rounded text-gray-300">Optoelectronics</span>
+                      </div>
+                      <div className="w-full bg-darkBg h-1.5 rounded-full overflow-hidden border border-white/5">
+                        <div className="bg-accent h-full rounded-full" style={{ width: '40%' }} />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Project 3 */}
+                  <div className="glass-card p-6 border-emerald-500/20 flex flex-col justify-between space-y-5">
+                    <div className="space-y-2">
+                      <span className="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-mono font-bold uppercase">Completed • 100%</span>
+                      <h3 className="text-base font-extrabold text-white">Distributed IP Oracle</h3>
+                      <p className="text-xs text-gray-400 leading-relaxed">Decentralized zero-knowledge patent attestation protocol for cryptographically signing tech transfer agreements.</p>
+                    </div>
+                    <div className="space-y-3 pt-2">
+                      <div className="flex flex-wrap gap-1.5">
+                        <span className="text-[10px] font-mono bg-white/5 border border-white/10 px-2 py-0.5 rounded text-gray-300">Solidity</span>
+                        <span className="text-[10px] font-mono bg-white/5 border border-white/10 px-2 py-0.5 rounded text-gray-300">ZK-Snarks</span>
+                        <span className="text-[10px] font-mono bg-white/5 border border-white/10 px-2 py-0.5 rounded text-gray-300">IPFS</span>
+                      </div>
+                      <div className="w-full bg-darkBg h-1.5 rounded-full overflow-hidden border border-white/5">
+                        <div className="bg-emerald-400 h-full rounded-full" style={{ width: '100%' }} />
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+                <div className="flex justify-start pt-2">
+                  <button 
+                    onClick={() => setActiveTab('workspace')}
+                    className="px-5 py-2.5 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:text-white transition-colors text-xs font-semibold text-gray-300"
+                  >
+                    ← Return to Workspace Canvas
+                  </button>
+                </div>
+              </motion.div>
+            )}
 
           </AnimatePresence>
         )}
