@@ -143,19 +143,39 @@ export default function LandingPage({ onLogin }) {
             {/* Phase 1 Card */}
             <motion.div
               whileHover={{ y: -4, scale: 1.01 }}
-              className="bg-gradient-to-br from-primary/10 via-[#0d0e12]/95 to-accent/5 border border-primary/20 rounded-2xl p-5 shadow-neonPrimary/5 flex flex-col justify-between min-h-[176px] relative group hover:border-primary/50 transition-all duration-300"
+              className="bg-gradient-to-br from-primary/10 via-[#0d0e12]/95 to-accent/5 border border-primary/20 rounded-2xl p-5 shadow-neonPrimary/5 flex flex-col justify-between min-h-[290px] relative group hover:border-primary/50 transition-all duration-300"
             >
               <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-full blur-2xl pointer-events-none group-hover:bg-primary/10" />
               
+              {/* 3D Holographic Cube Model */}
+              <div className="relative w-full h-24 flex items-center justify-center overflow-visible select-none mb-2" style={{ perspective: 1000 }}>
+                <motion.div
+                  animate={{ rotateY: 360, rotateX: [15, 25, 15] }}
+                  transition={{ repeat: Infinity, duration: 8, ease: "linear" }}
+                  style={{ transformStyle: 'preserve-3d' }}
+                  className="w-14 h-14 relative"
+                >
+                  <div className="absolute inset-0 bg-primary/15 border-2 border-primary/40 rounded-xl flex items-center justify-center shadow-[0_0_15px_rgba(217,70,239,0.25)]" style={{ transform: 'translateZ(28px)' }}>
+                    <Cpu className="w-5 h-5 text-primary" />
+                  </div>
+                  <div className="absolute inset-0 bg-primary/10 border border-primary/30 rounded-xl flex items-center justify-center" style={{ transform: 'rotateY(180deg) translateZ(28px)' }}>
+                    <Cpu className="w-4 h-4 text-primary/40" />
+                  </div>
+                  <div className="absolute inset-0 bg-primary/10 border border-primary/30 rounded-xl" style={{ transform: 'rotateY(-90deg) translateZ(28px)' }} />
+                  <div className="absolute inset-0 bg-primary/10 border border-primary/30 rounded-xl" style={{ transform: 'rotateY(90deg) translateZ(28px)' }} />
+                  <div className="absolute inset-0 bg-primary/10 border border-primary/30 rounded-xl" style={{ transform: 'rotateX(90deg) translateZ(28px)' }} />
+                  <div className="absolute inset-0 bg-primary/10 border border-primary/30 rounded-xl" style={{ transform: 'rotateX(-90deg) translateZ(28px)' }} />
+                </motion.div>
+              </div>
+
               <div className="flex justify-between items-start text-left">
                 <div className="space-y-1">
                   <span className="text-[10px] text-accent font-bold uppercase tracking-widest font-mono">Stage 01 • Escrow Escort</span>
                   <h3 className="text-sm font-extrabold text-white">Phase 1: Prototype Funding</h3>
                 </div>
-                <Activity className="w-5 h-5 text-primary animate-pulse shrink-0" />
               </div>
               
-              <p className="text-[11px] text-gray-400 leading-relaxed mt-3 text-left">
+              <p className="text-[11px] text-gray-400 leading-relaxed mt-2.5 text-left">
                 Micro-grants dynamically unlocked only upon system-validated technical milestones, such as verified Git commits and verified peer-review papers.
               </p>
               
@@ -168,19 +188,39 @@ export default function LandingPage({ onLogin }) {
             {/* Phase 2 Card */}
             <motion.div
               whileHover={{ y: -4, scale: 1.01 }}
-              className="bg-gradient-to-br from-emerald-500/10 via-[#0d0e12]/95 to-teal-500/5 border border-emerald-500/20 rounded-2xl p-5 shadow-neonAccent/5 flex flex-col justify-between min-h-[176px] relative group hover:border-emerald-500/50 transition-all duration-300"
+              className="bg-gradient-to-br from-emerald-500/10 via-[#0d0e12]/95 to-teal-500/5 border border-emerald-500/20 rounded-2xl p-5 shadow-neonAccent/5 flex flex-col justify-between min-h-[290px] relative group hover:border-emerald-500/50 transition-all duration-300"
             >
               <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 rounded-full blur-2xl pointer-events-none group-hover:bg-emerald-500/10" />
               
+              {/* 3D Holographic Cube Model */}
+              <div className="relative w-full h-24 flex items-center justify-center overflow-visible select-none mb-2" style={{ perspective: 1000 }}>
+                <motion.div
+                  animate={{ rotateY: -360, rotateX: [15, 25, 15] }}
+                  transition={{ repeat: Infinity, duration: 8, ease: "linear" }}
+                  style={{ transformStyle: 'preserve-3d' }}
+                  className="w-14 h-14 relative"
+                >
+                  <div className="absolute inset-0 bg-emerald-500/15 border-2 border-emerald-500/40 rounded-xl flex items-center justify-center shadow-[0_0_15px_rgba(16,185,129,0.25)]" style={{ transform: 'translateZ(28px)' }}>
+                    <LockKeyhole className="w-5 h-5 text-emerald-400" />
+                  </div>
+                  <div className="absolute inset-0 bg-emerald-500/10 border border-emerald-500/30 rounded-xl flex items-center justify-center" style={{ transform: 'rotateY(180deg) translateZ(28px)' }}>
+                    <LockKeyhole className="w-4 h-4 text-emerald-400/40" />
+                  </div>
+                  <div className="absolute inset-0 bg-emerald-500/10 border border-emerald-500/30 rounded-xl" style={{ transform: 'rotateY(-90deg) translateZ(28px)' }} />
+                  <div className="absolute inset-0 bg-emerald-500/10 border border-emerald-500/30 rounded-xl" style={{ transform: 'rotateY(90deg) translateZ(28px)' }} />
+                  <div className="absolute inset-0 bg-emerald-500/10 border border-emerald-500/30 rounded-xl" style={{ transform: 'rotateX(90deg) translateZ(28px)' }} />
+                  <div className="absolute inset-0 bg-emerald-500/10 border border-emerald-500/30 rounded-xl" style={{ transform: 'rotateX(-90deg) translateZ(28px)' }} />
+                </motion.div>
+              </div>
+
               <div className="flex justify-between items-start text-left">
                 <div className="space-y-1">
                   <span className="text-[10px] text-emerald-400 font-bold uppercase tracking-widest font-mono">Stage 02 • Attestation Ledger</span>
                   <h3 className="text-sm font-extrabold text-white">Phase 2: Fractional IP</h3>
                 </div>
-                <DollarSign className="w-5 h-5 text-emerald-400 shrink-0" />
               </div>
               
-              <p className="text-[11px] text-gray-400 leading-relaxed mt-3 text-left">
+              <p className="text-[11px] text-gray-400 leading-relaxed mt-2.5 text-left">
                 Unlock fractional IP patent rights to cover legal patent filing fees, in exchange for micro-royalties on future licensing agreements.
               </p>
               
