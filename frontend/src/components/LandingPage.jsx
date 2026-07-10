@@ -131,7 +131,7 @@ export default function LandingPage({ onLogin }) {
               Deep-tech IP attestation & Escrow
             </span>
             <h1 className="text-3xl md:text-5xl font-black uppercase tracking-wider leading-tight text-white">
-              Funding & Patenting <span className="bg-gradient-to-r from-primary via-fuchsia-500 to-accent bg-clip-text text-transparent">Deep-Tech</span> Created by <span className="text-fuchsia-400">Women</span>
+              Empowering <span className="bg-gradient-to-r from-primary via-fuchsia-500 to-accent bg-clip-text text-transparent">Women</span> to Build Their Innovations into <span className="text-fuchsia-400">Reality</span>
             </h1>
             <p className="text-sm text-gray-400 leading-relaxed max-w-2xl">
               We empower female STEM innovators by providing milestone-based capital for prototypes and crowdfunding legal fees for patents. **EquiPatent** helps you turn university lab research into protected commercial tech.
