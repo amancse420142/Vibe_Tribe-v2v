@@ -133,60 +133,57 @@ export default function LandingPage({ onLogin }) {
             </p>
           </div>
 
-          {/* 3D Interactive Tilt Card Deck */}
-          <div 
-            className="relative w-full max-w-xl h-56 flex items-center justify-center pointer-events-auto"
-            style={{ perspective: 1000 }}
-          >
+          {/* Side-by-Side Phase 1 & Phase 2 Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-xl">
+            {/* Phase 1 Card */}
             <motion.div
-              style={{
-                rotateX: -mousePos.y * 1.5,
-                rotateY: mousePos.x * 1.5,
-                transformStyle: 'preserve-3d'
-              }}
-              transition={{ type: 'spring', stiffness: 120, damping: 20 }}
-              className="absolute w-11/12 h-44 bg-gradient-to-br from-primary/10 via-cardBg/90 to-accent/15 border border-primary/20 rounded-2xl p-6 shadow-neonPrimary/10 flex flex-col justify-between z-20 group hover:border-primary/50 transition-all duration-300"
+              whileHover={{ y: -4, scale: 1.01 }}
+              className="bg-gradient-to-br from-primary/10 via-[#0d0e12]/95 to-accent/5 border border-primary/20 rounded-2xl p-5 shadow-neonPrimary/5 flex flex-col justify-between min-h-[176px] relative group hover:border-primary/50 transition-all duration-300"
             >
               <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-full blur-2xl pointer-events-none group-hover:bg-primary/10" />
               
-              <div className="flex justify-between items-start" style={{ transform: 'translateZ(30px)' }}>
+              <div className="flex justify-between items-start text-left">
                 <div className="space-y-1">
                   <span className="text-[10px] text-accent font-bold uppercase tracking-widest font-mono">Stage 01 • Escrow Escort</span>
-                  <h3 className="text-base font-extrabold text-white">Phase 1: Prototype Funding</h3>
+                  <h3 className="text-sm font-extrabold text-white">Phase 1: Prototype Funding</h3>
                 </div>
-                <Activity className="w-5 h-5 text-primary animate-pulse" />
+                <Activity className="w-5 h-5 text-primary animate-pulse shrink-0" />
               </div>
-              <p className="text-[11px] text-gray-400 leading-relaxed max-w-md" style={{ transform: 'translateZ(20px)' }}>
+              
+              <p className="text-[11px] text-gray-400 leading-relaxed mt-3 text-left">
                 Micro-grants dynamically unlocked only upon system-validated technical milestones, such as verified Git commits and verified peer-review papers.
               </p>
-              <div className="flex justify-between items-center text-[10px] text-gray-500 font-mono" style={{ transform: 'translateZ(10px)' }}>
-                <span>Escrow Smart Contract Locked</span>
-                <span className="text-white font-bold">100% SECURE</span>
+              
+              <div className="flex justify-between items-center text-[10px] text-gray-500 font-mono mt-4 border-t border-white/5 pt-2">
+                <span>Escrow Contract</span>
+                <span className="text-white font-bold">SECURE</span>
               </div>
             </motion.div>
 
-            {/* Back Stacked Card */}
-            <div 
-              style={{
-                transform: `rotateX(${-mousePos.y * 0.8}deg) rotateY(${mousePos.x * 0.8}deg) translateZ(-40px) translateY(24px) scale(0.95)`
-              }}
-              className="absolute w-11/12 h-44 bg-gradient-to-br from-emerald-500/10 via-cardBg/90 to-teal-500/10 border border-emerald-500/20 rounded-2xl p-6 opacity-60 z-10 flex flex-col justify-between"
+            {/* Phase 2 Card */}
+            <motion.div
+              whileHover={{ y: -4, scale: 1.01 }}
+              className="bg-gradient-to-br from-emerald-500/10 via-[#0d0e12]/95 to-teal-500/5 border border-emerald-500/20 rounded-2xl p-5 shadow-neonAccent/5 flex flex-col justify-between min-h-[176px] relative group hover:border-emerald-500/50 transition-all duration-300"
             >
-              <div className="flex justify-between items-start">
+              <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 rounded-full blur-2xl pointer-events-none group-hover:bg-emerald-500/10" />
+              
+              <div className="flex justify-between items-start text-left">
                 <div className="space-y-1">
                   <span className="text-[10px] text-emerald-400 font-bold uppercase tracking-widest font-mono">Stage 02 • Attestation Ledger</span>
-                  <h3 className="text-base font-extrabold text-white">Phase 2: Fractional IP Shares</h3>
+                  <h3 className="text-sm font-extrabold text-white">Phase 2: Fractional IP</h3>
                 </div>
-                <DollarSign className="w-5 h-5 text-emerald-400" />
+                <DollarSign className="w-5 h-5 text-emerald-400 shrink-0" />
               </div>
-              <p className="text-[11px] text-gray-400 leading-relaxed">
-                Unlock fractional IP patent shares for alumni and backers to cover patent filing fees, in exchange for micro-royalties on future software licensing.
+              
+              <p className="text-[11px] text-gray-400 leading-relaxed mt-3 text-left">
+                Unlock fractional IP patent rights to cover legal patent filing fees, in exchange for micro-royalties on future licensing agreements.
               </p>
-              <div className="flex justify-between items-center text-[10px] text-gray-500 font-mono">
-                <span>Royalty Ledger Ledgerized</span>
+              
+              <div className="flex justify-between items-center text-[10px] text-gray-500 font-mono mt-4 border-t border-white/5 pt-2">
+                <span>Royalty Ledger</span>
                 <span className="text-emerald-400 font-bold">FRACTIONAL IP</span>
               </div>
-            </div>
+            </motion.div>
           </div>
 
           {/* Quick Statistics Banner */}
