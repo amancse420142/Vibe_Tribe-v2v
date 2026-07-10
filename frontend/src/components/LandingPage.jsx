@@ -100,7 +100,12 @@ export default function LandingPage({ onLogin }) {
       <header className="w-full max-w-7xl mx-auto flex justify-between items-center relative z-20 pb-6 border-b border-white/5">
         <div className="flex items-center gap-2">
           <div className="w-9 h-9 rounded-lg bg-gradient-to-tr from-primary to-accent flex items-center justify-center shadow-neonPrimary">
-            <Sparkles className="w-5 h-5 text-white" />
+            <svg className="w-5.5 h-5.5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="9" r="5" />
+              <path d="M12 14v7" />
+              <path d="M9 18h6" />
+              <circle cx="12" cy="9" r="1" fill="currentColor" />
+            </svg>
           </div>
           <div className="text-left">
             <span className="font-extrabold text-base tracking-wider bg-gradient-to-r from-white via-lightPurple to-accent bg-clip-text text-transparent">
@@ -126,10 +131,10 @@ export default function LandingPage({ onLogin }) {
               Deep-tech IP attestation & Escrow
             </span>
             <h1 className="text-3xl md:text-5xl font-black uppercase tracking-wider leading-tight text-white">
-              Bridging the gap between <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Breakthrough Tech</span> and <span className="text-emerald-400">IP Escrow</span>
+              Funding & Patenting <span className="bg-gradient-to-r from-primary via-fuchsia-500 to-accent bg-clip-text text-transparent">Deep-Tech</span> Created by <span className="text-fuchsia-400">Women</span>
             </h1>
             <p className="text-sm text-gray-400 leading-relaxed max-w-2xl">
-              Despite developing breakthrough concepts in university labs, female STEM innovators face a devastating two-part financial hurdle: they receive less than 3% of venture funding, and exhorbitant legal patent fees leave their designs buried. <strong>EquiPatent</strong> bridges this pipeline safely.
+              We empower female STEM innovators by providing milestone-based capital for prototypes and crowdfunding legal fees for patents. **EquiPatent** helps you turn university lab research into protected commercial tech.
             </p>
           </div>
 

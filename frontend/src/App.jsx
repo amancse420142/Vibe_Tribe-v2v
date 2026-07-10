@@ -865,8 +865,13 @@ function App() {
         {/* Left Brand & Navigation tabs */}
         <div className="flex items-center gap-8">
           <div onClick={() => setActiveTab('dashboard')} className="cursor-pointer flex items-center gap-2 group">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-primary to-accent flex items-center justify-center shadow-neonPrimary transition-transform group-hover:scale-105">
-              <Sparkles className="w-6 h-6 text-white" />
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-primary via-fuchsia-500 to-accent flex items-center justify-center shadow-neonPrimary transition-transform group-hover:scale-105">
+              <svg className="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="9" r="5" />
+                <path d="M12 14v7" />
+                <path d="M9 18h6" />
+                <circle cx="12" cy="9" r="1" fill="currentColor" />
+              </svg>
             </div>
             <div className="text-left">
               <span className="font-extrabold text-lg tracking-wider bg-gradient-to-r from-white via-lightPurple to-accent bg-clip-text text-transparent">
