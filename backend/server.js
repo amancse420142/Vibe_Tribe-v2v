@@ -143,7 +143,11 @@ app.get('*', (req, res) => {
   if (fs.existsSync(indexHtmlPath)) {
     res.sendFile(indexHtmlPath);
   } else {
-    res.status(404).send('Frontend bundle not found. Please run npm run build in frontend directory.');
+    if (req.path === '/') {
+      res.json({ status: "MERN API Backend Operational", storage: dbMode });
+    } else {
+      res.status(404).send('API endpoint not found.');
+    }
   }
 });
 
