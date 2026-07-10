@@ -2090,18 +2090,22 @@ function App() {
                         <div className="space-y-1">
                           <span className="text-[10px] text-gray-500 uppercase tracking-wider font-mono block">Capital Deposited</span>
                           <span className="text-3xl font-black text-emerald-400 font-mono tracking-tight">
-                            ${(grantTotalAmount).toLocaleString()} <span className="text-sm font-normal text-gray-400">USDT</span>
+                            ${(showCounterOffer ? (grantPhase1Amount + counterAmount) : grantTotalAmount).toLocaleString()} <span className="text-sm font-normal text-gray-400">USDT</span>
                           </span>
                         </div>
                         
-                        <div className="grid grid-cols-2 gap-4 pt-4 border-t border-white/5 text-xs">
+                        <div className="grid grid-cols-3 gap-4 pt-4 border-t border-white/5 text-xs">
                           <div>
                             <span className="text-gray-500 block mb-0.5 font-mono text-[9px] uppercase">Phase 1 Grant</span>
                             <span className="font-bold text-white font-mono">${grantPhase1Amount.toLocaleString()}</span>
                           </div>
                           <div>
                             <span className="text-gray-500 block mb-0.5 font-mono text-[9px] uppercase">Phase 2 Investment</span>
-                            <span className="font-bold text-white font-mono">${(grantTotalAmount - grantPhase1Amount).toLocaleString()}</span>
+                            <span className="font-bold text-white font-mono">${(showCounterOffer ? counterAmount : (grantTotalAmount - grantPhase1Amount)).toLocaleString()}</span>
+                          </div>
+                          <div>
+                            <span className="text-gray-500 block mb-0.5 font-mono text-[9px] uppercase">Equity Offered</span>
+                            <span className="font-bold text-[#d946ef] font-mono">{showCounterOffer ? `${counterEquity}%` : "12.5%"}</span>
                           </div>
                         </div>
                       </div>
@@ -2109,7 +2113,7 @@ function App() {
                       {/* Bank Details Status */}
                       <div className="space-y-3">
                         <div 
-                          onClick={() => alert(`WIRE TRANSFER CERTIFICATE:\n-------------------------\nOriginating Bank: Federal Reserve Wire Network\nLead Syndicate Account: Sequoia Capital Trust (*0092)\nReceiving Bank: JP Morgan Chase\nAccount: Account Holder ****4890\nPhase 1 Disbursed: $${grantPhase1Amount.toLocaleString()} USDT\nPhase 2 Disbursed: $${(grantTotalAmount - grantPhase1Amount).toLocaleString()} USDT\nTotal Disbursed: $${grantTotalAmount.toLocaleString()} USDT\nStatus: Settlement Complete via Fedwire Funds Service.`)}
+                          onClick={() => alert(`WIRE TRANSFER CERTIFICATE:\n-------------------------\nOriginating Bank: Federal Reserve Wire Network\nLead Syndicate Account: Sequoia Capital Trust (*0092)\nReceiving Bank: JP Morgan Chase\nAccount: Account Holder ****4890\nPhase 1 Disbursed: $${grantPhase1Amount.toLocaleString()} USDT\nPhase 2 Disbursed: $${(showCounterOffer ? counterAmount : (grantTotalAmount - grantPhase1Amount)).toLocaleString()} USDT\nTotal Disbursed: $${(showCounterOffer ? (grantPhase1Amount + counterAmount) : grantTotalAmount).toLocaleString()} USDT\nStatus: Settlement Complete via Fedwire Funds Service.`)}
                           className="p-4 bg-emerald-500/[0.02] border border-emerald-500/10 rounded-xl flex items-center justify-between hover:bg-emerald-500/[0.06] hover:border-emerald-500/20 cursor-pointer transition-all"
                         >
                           <div className="space-y-0.5">
