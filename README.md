@@ -41,3 +41,82 @@ The website is built on a MERN Stack (MongoDB, Express, React, Node.js) paired w
 * **Render**: Hosts the dynamic live Node.js/Express API server.
 
 ## Documentation
+
+This guide will help you set up and run EquiPatent locally on your machine.
+
+### 1. Prerequisites
+Before getting started, make sure you have the following installed:
+*   [Node.js](https://nodejs.org/) (v18.x or higher)
+*   [MongoDB](https://www.mongodb.com/) (Local Community Server or Atlas Cluster connection)
+*   [Git](https://git-scm.com/)
+
+---
+
+### 2. Folder Structure
+The repository is split into two main sections:
+*   `/backend`: Node.js, Express, and Mongoose schemas/controllers.
+*   `/frontend`: React, Vite, Framer Motion, and Tailwind CSS.
+
+---
+
+### 3. Local Setup & Installation
+
+#### Step A: Clone the Repository
+```bash
+git clone https://github.com/amancse420142/Vibe_Tribe-v2v.git
+cd Vibe_Tribe-v2v
+```
+
+#### Step B: Backend Configuration
+1. Navigate to the backend directory:
+   ```bash
+   cd backend
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Create a `.env` file in the `/backend` directory and add your connection variables:
+   ```env
+   PORT=5000
+   MONGO_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/equipatent
+   ```
+
+#### Step C: Frontend Configuration
+1. Navigate to the frontend directory:
+   ```bash
+   cd ../frontend
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+---
+
+### 4. Running Locally
+
+#### Run Backend Server:
+```bash
+cd backend
+npm run dev
+# Server runs on http://localhost:5000
+```
+
+#### Run Frontend Dev Server:
+```bash
+cd frontend
+npm run dev
+# Vite runs on http://localhost:5173
+```
+
+---
+
+### 5. API Endpoints
+
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `POST` | `/api/register` | Registers a new female STEM developer node. |
+| `POST` | `/api/login` | Validates credentials and initializes local user session. |
+| `GET` | `/api/profile` | Fetches active profile data, synced projects, and milestones. |
+| `POST` | `/api/profile` | Updates biography, skills, and Web3 wallet attestation details. |
