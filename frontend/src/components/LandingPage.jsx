@@ -170,7 +170,7 @@ export default function LandingPage({ onLogin }) {
 
               <div className="flex justify-between items-start text-left">
                 <div className="space-y-1">
-                  <span className="text-[10px] text-accent font-bold uppercase tracking-widest font-mono">Stage 01 • Escrow Escort</span>
+                  <span className="text-[10px] text-accent font-bold uppercase tracking-widest font-mono">Stage 01</span>
                   <h3 className="text-sm font-extrabold text-white">Phase 1: Prototype Funding</h3>
                 </div>
               </div>
@@ -215,7 +215,7 @@ export default function LandingPage({ onLogin }) {
 
               <div className="flex justify-between items-start text-left">
                 <div className="space-y-1">
-                  <span className="text-[10px] text-emerald-400 font-bold uppercase tracking-widest font-mono">Stage 02 • Attestation Ledger</span>
+                  <span className="text-[10px] text-emerald-400 font-bold uppercase tracking-widest font-mono">Stage 02</span>
                   <h3 className="text-sm font-extrabold text-white">Phase 2: Fractional IP</h3>
                 </div>
               </div>
