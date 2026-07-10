@@ -16,6 +16,27 @@ EquiPatent successfully merges FinTech and STEM by allowing female creators to s
 
 ## Features
 
+EquiPatent provides a tailored, secure workspace designed specifically for female STEM pioneers, academic researchers, and deep-tech founders:
+
+### 1. Academic Identity Attestation (Check-In Gate)
+*   **Profile Attestation Form**: Locks access until the researcher attests their academic identity—including biography, academic role, laboratory affiliation, technical skills list, and Web3 wallet address.
+*   **Cryptographic Attestation Simulator**: Simulates secure digital ledger signing to verify the authenticity of the innovator's technical credentials before unlocking the workspace.
+
+### 2. Dynamic Sidebar Stepper Timeline
+*   **Interactive Journey Stepper**: A vertical timeline tracking active progress across workspace stages (Login → Profile Verification → Developer Sync → Project Deployment) in real-time, unlocking new sections sequentially.
+
+### 3. Git-Verified Developer Sync (Creator Dashboard)
+*   **GitHub API Integration**: Connects directly to GitHub repositories, fetching active project branches and commit histories to verify raw technical progress.
+*   **Persistent Storage**: Saves synced repositories, active project files, and verification progress inside a persistent MongoDB backend, preventing data loss on relogin or refresh.
+
+### 4. Project Management & Deployment Stamp
+*   **MyProjects Hub**: Beautiful portfolio cards displaying active deep-tech research projects, technology tags, and connected PDFs/source code.
+*   **Green Deployment Stamps**: Prominently stamps successfully verified projects with a glowing green **"DEPLOYED SUCCESSFULLY"** badge to establish verifiable technical proofs for prospective backers.
+
+### 5. Interactive Milestone Grant Planner
+*   **Budget Split Slider**: Responsive budget calculators allowing founders to slides total funding requirements ($5,000 to $500,000) with auto-rebalancing phase allocations.
+*   **Resource Allocation Grid**: Pre-defined category grids (US Patent Filing Fees, Software/Cloud, and R&D) that dynamically rebalance their share weights based on funding rules.
+
 ## Tech Stack & Tools
 
 The website is built on a MERN Stack (MongoDB, Express, React, Node.js) paired with modern utility frameworks. Here is the complete breakdown of the technologies used:
