@@ -73,7 +73,7 @@ export default function LandingPage({ onLogin }) {
         onLogin({ name, university, email });
       }
     } catch (err) {
-      if (!isLogin) {
+      if (isLogin) {
         setErrorMsg('makesure that you are already registered!');
       } else {
         setErrorMsg(err.message);
