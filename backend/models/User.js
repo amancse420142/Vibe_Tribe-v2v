@@ -21,8 +21,24 @@ const UserSchema = new mongoose.Schema({
     progress: { type: Number },
     phase1Verified: { type: Boolean },
     phase2Verified: { type: Boolean },
-    documents: [{ type: String }]
-  }]
+    documents: [{ type: String }],
+    gitUsernameInput: { type: String },
+    gitUser: { type: mongoose.Schema.Types.Mixed },
+    gitRepos: { type: mongoose.Schema.Types.Mixed },
+    selectedGitRepo: { type: String },
+    gitCommits: { type: mongoose.Schema.Types.Mixed },
+    peerPapersVerified: { type: Boolean },
+    uploadedDocs: { type: mongoose.Schema.Types.Mixed }
+  }],
+  grantTotalAmount: { type: Number, default: 50000 },
+  grantPhase1Amount: { type: Number, default: 20000 },
+  projectDescription: { type: String, default: '' },
+  budgetSplitItems: [{
+    category: { type: String },
+    amount: { type: Number }
+  }],
+  grantApplied: { type: Boolean, default: false },
+  phase2Attested: { type: Boolean, default: false }
 }, { timestamps: true });
 
 const User = mongoose.model('User', UserSchema);

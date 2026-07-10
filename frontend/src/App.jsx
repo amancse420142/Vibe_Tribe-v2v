@@ -627,6 +627,14 @@ function App() {
           ...updatedStates
         }));
       }
+
+      // Initialize grant fields from database if present
+      if (data.grantTotalAmount !== undefined) setGrantTotalAmount(data.grantTotalAmount);
+      if (data.grantPhase1Amount !== undefined) setGrantPhase1Amount(data.grantPhase1Amount);
+      if (data.projectDescription !== undefined) setProjectDescription(data.projectDescription);
+      if (data.budgetSplitItems && data.budgetSplitItems.length > 0) setBudgetSplitItems(data.budgetSplitItems);
+      if (data.grantApplied !== undefined) setGrantApplied(data.grantApplied);
+      if (data.phase2Attested !== undefined) setPhase2Attested(data.phase2Attested);
       
       // Initialize edit fields
       setEditName(data.name);
@@ -1829,18 +1837,29 @@ function App() {
                   <div className="flex justify-center pt-2 pb-4">
                     {!grantApplied ? (
                       <button
-                        onClick={() => {
+                        onClick={async () => {
                           setGrantApplying(true);
-                          setTimeout(() => {
-                            setGrantApplying(false);
+                          try {
+                            const updatedProfile = await api.updateProfile({
+                              grantTotalAmount,
+                              grantPhase1Amount,
+                              projectDescription,
+                              budgetSplitItems,
+                              grantApplied: true
+                            });
+                            setProfile(updatedProfile);
                             setGrantApplied(true);
-                            setToastMessage(`Your grant application for $${grantTotalAmount.toLocaleString()} has been granted successfully! Your requested Phase 1 amount of $${grantPhase1Amount.toLocaleString()} has been disbursed and debited into your bank account.`);
+                            setToastMessage(`Your grant application for ${grantTotalAmount.toLocaleString()} has been granted successfully! Your requested Phase 1 amount of ${grantPhase1Amount.toLocaleString()} has been disbursed and debited into your bank account.`);
                             setShowToast(true);
                             // Auto-navigate to phase2 view after a 3.5s delay
                             setTimeout(() => {
                               setActiveTab('phase2');
                             }, 3500);
-                          }, 2500);
+                          } catch (err) {
+                            alert("Failed to submit grant application: " + err.message);
+                          } finally {
+                            setGrantApplying(false);
+                          }
                         }}
                         disabled={grantApplying || !projectDescription.trim()}
                         className={`group relative px-10 py-4 rounded-2xl text-base font-black uppercase tracking-widest transition-all duration-300 flex items-center gap-3 cursor-pointer ${
@@ -2244,14 +2263,22 @@ function App() {
                       </div>
 
                       <button
-                        onClick={() => {
+                        onClick={async () => {
                           const amountStr = showCounterOffer ? counterAmount.toLocaleString() : (grantTotalAmount - grantPhase1Amount).toLocaleString();
                           const equityStr = showCounterOffer ? `${counterEquity}%` : "12.5%";
                           
-                          setPhase2Attested(true);
-                          setToastMessage(`Your equity offer has been accepted! Phase 2 Funding of $${amountStr} USDT has been unlocked in exchange for ${equityStr} equity. Funds have been disbursed straight into your bank account!`);
-                          setShowToast(true);
-                          setActiveTab('deployed');
+                          try {
+                            const updatedProfile = await api.updateProfile({
+                              phase2Attested: true
+                            });
+                            setProfile(updatedProfile);
+                            setPhase2Attested(true);
+                            setToastMessage(`Your equity offer has been accepted! Phase 2 Funding of ${amountStr} USDT has been unlocked in exchange for ${equityStr} equity. Funds have been disbursed straight into your bank account!`);
+                            setShowToast(true);
+                            setActiveTab('deployed');
+                          } catch (err) {
+                            alert("Failed to attest equity offer: " + err.message);
+                          }
                         }}
                         className={`w-full py-4 mt-6 bg-gradient-to-r border rounded-2xl text-xs font-black uppercase tracking-wider text-white transition-all duration-300 shadow-[0_0_20px_rgba(168,85,247,0.2)] hover:scale-[1.01] active:scale-[0.99] cursor-pointer ${
                           showCounterOffer 

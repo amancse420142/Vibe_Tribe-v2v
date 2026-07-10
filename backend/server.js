@@ -70,7 +70,17 @@ const defaultProfile = {
       phase2Verified: true,
       documents: []
     }
-  ]
+  ],
+  grantTotalAmount: 50000,
+  grantPhase1Amount: 20000,
+  projectDescription: '',
+  budgetSplitItems: [
+    { category: 'US Patent Filing Fee', amount: 8000 },
+    { category: 'Software & Cloud Services', amount: 5000 },
+    { category: 'Research & Development', amount: 7000 }
+  ],
+  grantApplied: false,
+  phase2Attested: false
 };
 
 // Local JSON File Database Fallback
@@ -144,7 +154,10 @@ app.get('/api/profile', async (req, res) => {
 // 2. Update user profile
 app.put('/api/profile', async (req, res) => {
   try {
-    const { name, university, department, role, bio, skills, walletAddress, innovationScore, projects } = req.body;
+    const { 
+      name, university, department, role, bio, skills, walletAddress, innovationScore, projects,
+      grantTotalAmount, grantPhase1Amount, projectDescription, budgetSplitItems, grantApplied, phase2Attested
+    } = req.body;
     
     if (dbMode === 'mongo') {
       const profile = await User.findOne({ id: 'dr-elena-rostova' });
@@ -159,6 +172,12 @@ app.put('/api/profile', async (req, res) => {
       if (walletAddress !== undefined) profile.walletAddress = walletAddress;
       if (innovationScore !== undefined) profile.innovationScore = innovationScore;
       if (projects !== undefined) profile.projects = projects;
+      if (grantTotalAmount !== undefined) profile.grantTotalAmount = grantTotalAmount;
+      if (grantPhase1Amount !== undefined) profile.grantPhase1Amount = grantPhase1Amount;
+      if (projectDescription !== undefined) profile.projectDescription = projectDescription;
+      if (budgetSplitItems !== undefined) profile.budgetSplitItems = budgetSplitItems;
+      if (grantApplied !== undefined) profile.grantApplied = grantApplied;
+      if (phase2Attested !== undefined) profile.phase2Attested = phase2Attested;
       
       await profile.save();
       res.json(profile);
@@ -175,6 +194,12 @@ app.put('/api/profile', async (req, res) => {
       if (walletAddress !== undefined) user.walletAddress = walletAddress;
       if (innovationScore !== undefined) user.innovationScore = innovationScore;
       if (projects !== undefined) user.projects = projects;
+      if (grantTotalAmount !== undefined) user.grantTotalAmount = grantTotalAmount;
+      if (grantPhase1Amount !== undefined) user.grantPhase1Amount = grantPhase1Amount;
+      if (projectDescription !== undefined) user.projectDescription = projectDescription;
+      if (budgetSplitItems !== undefined) user.budgetSplitItems = budgetSplitItems;
+      if (grantApplied !== undefined) user.grantApplied = grantApplied;
+      if (phase2Attested !== undefined) user.phase2Attested = phase2Attested;
       
       db.user = user;
       saveFileDb(db);
