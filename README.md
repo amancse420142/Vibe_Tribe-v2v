@@ -18,4 +18,26 @@ EquiPatent successfully merges FinTech and STEM by allowing female creators to s
 
 ## Tech Stack & Tools
 
-## Documeentation
+The website is built on a MERN Stack (MongoDB, Express, React, Node.js) paired with modern utility frameworks. Here is the complete breakdown of the technologies used:
+
+### 1. Frontend (Client-side)
+* **React (v19)**: Component-based UI engine.
+* **Vite**: Next-generation lightning-fast build tool and development server.
+* **Tailwind CSS (v4)**: Modern CSS configuration for the styling, dark-mode glassmorphic layouts, and responsive grids.
+* **Framer Motion**: Used for fluid animations, sliding forms, page transitions, and interactive user flows.
+* **Lucide React**: Icon library used for vector iconography across navigation dashboards and forms.
+
+### 2. Backend (Server-side)
+* **Node.js**: Asynchronous JavaScript runtime environment.
+* **Express**: RESTful API framework routing dashboard commands, database requests, and profile validation states.
+* **CORS**: Middleware configured to securely link frontend API calls to backend endpoints.
+
+### 3. Database
+* **MongoDB**: NoSQL database holding persistent user profiles, verified academic credentials, and project milestone data.
+* **Mongoose**: Object Data Modeling (ODM) library connecting Express endpoints securely to MongoDB collections.
+
+### 4. Hosting & Deployment
+* **Vercel**: Hosts the static compiled React frontend.
+* **Render**: Hosts the dynamic live Node.js/Express API server.
+
+## Documentation
