@@ -944,11 +944,9 @@ function App() {
                   activeTab === 'profile' ? 'ring-2 ring-accent shadow-neonAccent' : ''
                 }`}
               >
-                <img 
-                  src={profile.avatar} 
-                  alt={profile.name} 
-                  className="w-14 h-14 rounded-full object-cover border-2 border-darkBg"
-                />
+                <div className="w-14 h-14 rounded-full bg-gradient-to-tr from-primary/25 to-accent/25 border-2 border-primary/45 flex items-center justify-center text-white">
+                  <User className="w-6 h-6 text-white" />
+                </div>
                 <span className="absolute bottom-0 right-0 w-4 h-4 rounded-full bg-emerald-500 border-2 border-darkBg flex items-center justify-center">
                   <span className="w-1.5 h-1.5 rounded-full bg-white animate-ping" />
                 </span>
@@ -2761,11 +2759,9 @@ function App() {
                       <div className="flex flex-col sm:flex-row items-center gap-6 py-6 text-left">
                         <div className="relative flex-shrink-0">
                           <div className="w-24 h-24 rounded-full bg-gradient-to-tr from-primary via-secondary to-accent p-1 shadow-neonPrimary">
-                            <img 
-                              src={profile.avatar} 
-                              alt={profile.name} 
-                              className="w-full h-full object-cover rounded-full border-4 border-cardBg"
-                            />
+                            <div className="w-full h-full bg-gradient-to-tr from-primary/25 to-accent/25 rounded-full border-4 border-cardBg flex items-center justify-center text-white">
+                              <User className="w-10 h-10 text-white" />
+                            </div>
                           </div>
                           <span className="absolute bottom-0 right-0 w-5.5 h-5.5 rounded-full bg-emerald-500 border-4 border-cardBg" />
                         </div>
