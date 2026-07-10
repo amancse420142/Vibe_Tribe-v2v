@@ -822,38 +822,16 @@ function App() {
   const handleLoginSuccess = async (regData) => {
     localStorage.setItem('isAuthenticated', 'true');
     setIsAuthenticated(true);
-    if (regData && regData.name) {
-      setLoading(true);
-      try {
-        const updated = await api.updateProfile({
-          name: regData.name,
-          university: regData.university,
-          walletAddress: regData.email,
-          role: 'Lead Researcher',
-          department: 'Bioengineering & Computer Science',
-          bio: '',
-          skills: []
-        });
-        setProfile(updated);
-        setEditName(updated.name);
-        setEditUniversity(updated.university);
-        setEditDepartment(updated.department || '');
-        setEditRole(updated.role || '');
-        setEditBio(updated.bio || '');
-        setEditSkills('');
-        setEditWallet(updated.walletAddress || '');
-        setProfileVerified(false);
-      } catch (err) {
-        console.error("Error setting up profile on register:", err);
-      } finally {
-        setLoading(false);
-      }
-    } else {
-      if (profile && profile.bio && profile.skills && profile.skills.length > 0 && profile.walletAddress) {
-        setProfileVerified(true);
-      } else {
+    setLoading(true);
+    try {
+      await fetchProfile();
+      if (regData) {
         setProfileVerified(false);
       }
+    } catch (err) {
+      console.error("Error loading user profile on login success:", err);
+    } finally {
+      setLoading(false);
     }
     
     // Switch active tab to profile verification

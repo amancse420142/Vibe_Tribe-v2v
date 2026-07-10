@@ -25,20 +25,57 @@ export default function LandingPage({ onLogin }) {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setErrorMsg('');
 
-    // Simulate authenticating/validating
-    setTimeout(() => {
-      setLoading(false);
+    try {
       if (isLogin) {
+        const response = await fetch('/api/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email, password })
+        });
+        
+        if (!response.ok) {
+          const errData = await response.json().catch(() => ({}));
+          throw new Error(errData.message || 'Invalid email or password.');
+        }
+        
+        const userData = await response.json();
+        // Save user email to identify active session in profile calls
+        localStorage.setItem('userEmail', email);
         onLogin();
       } else {
+        if (!name.trim() || !university.trim()) {
+          throw new Error('Name and university affiliation are required for registration.');
+        }
+        
+        const response = await fetch('/api/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ name, university, email, password })
+        });
+        
+        if (!response.ok) {
+          const errData = await response.json().catch(() => ({}));
+          throw new Error(errData.message || 'Registration failed.');
+        }
+        
+        const userData = await response.json();
+        localStorage.setItem('userEmail', email);
         onLogin({ name, university, email });
       }
-    }, 1200);
+    } catch (err) {
+      setErrorMsg(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

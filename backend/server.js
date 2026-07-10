@@ -27,6 +27,8 @@ if (fs.existsSync(distPath)) {
 const defaultProfile = {
   id: 'dr-elena-rostova',
   name: 'Dr. Elena Rostova',
+  email: 'elena@stanford.edu',
+  password: 'password123',
   avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=200&auto=format&fit=crop',
   university: 'Stanford University',
   department: 'Bioengineering & Computer Science',
@@ -127,8 +129,13 @@ mongoose.connect(MONGODB_URI, { serverSelectionTimeoutMS: 3000 })
 // 1. Get user profile
 app.get('/api/profile', async (req, res) => {
   try {
+    const email = req.headers['x-user-email'] || 'elena@stanford.edu';
     if (dbMode === 'mongo') {
-      const profile = await User.findOne({ id: 'dr-elena-rostova' });
+      let profile = await User.findOne({ email });
+      if (!profile) {
+        // Fallback to default user if looking for Elena
+        profile = await User.findOne({ id: 'dr-elena-rostova' });
+      }
       if (!profile) return res.status(404).json({ message: 'Profile not found' });
       
       // Auto-populate projects if empty/missing
@@ -159,8 +166,12 @@ app.put('/api/profile', async (req, res) => {
       grantTotalAmount, grantPhase1Amount, projectDescription, budgetSplitItems, grantApplied, phase2Attested
     } = req.body;
     
+    const email = req.headers['x-user-email'] || 'elena@stanford.edu';
     if (dbMode === 'mongo') {
-      const profile = await User.findOne({ id: 'dr-elena-rostova' });
+      let profile = await User.findOne({ email });
+      if (!profile) {
+        profile = await User.findOne({ id: 'dr-elena-rostova' });
+      }
       if (!profile) return res.status(404).json({ message: 'Profile not found' });
       
       if (name !== undefined) profile.name = name;
@@ -204,6 +215,99 @@ app.put('/api/profile', async (req, res) => {
       db.user = user;
       saveFileDb(db);
       res.json(user);
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// 3. Register a new user
+app.post('/api/register', async (req, res) => {
+  try {
+    const { name, university, email, password } = req.body;
+    if (!name || !university || !email || !password) {
+      return res.status(400).json({ message: 'All fields are required.' });
+    }
+
+    if (dbMode === 'mongo') {
+      const existingUser = await User.findOne({ email });
+      if (existingUser) {
+        return res.status(400).json({ message: 'Email already registered.' });
+      }
+
+      const newUser = new User({
+        id: email, // use email as user ID
+        name,
+        email,
+        password, // simple plaintext password
+        university,
+        department: 'Bioengineering & Computer Science',
+        role: 'Lead Researcher',
+        bio: '',
+        skills: [],
+        walletAddress: email,
+        projects: defaultProfile.projects,
+        grantTotalAmount: 50000,
+        grantPhase1Amount: 20000,
+        projectDescription: '',
+        budgetSplitItems: defaultProfile.budgetSplitItems,
+        grantApplied: false,
+        phase2Attested: false
+      });
+      await newUser.save();
+      res.json({ email: newUser.email, name: newUser.name });
+    } else {
+      const db = getFileDb();
+      db.user = {
+        id: email,
+        name,
+        email,
+        password,
+        university,
+        department: 'Bioengineering & Computer Science',
+        role: 'Lead Researcher',
+        bio: '',
+        skills: [],
+        walletAddress: email,
+        projects: defaultProfile.projects,
+        grantTotalAmount: 50000,
+        grantPhase1Amount: 20000,
+        projectDescription: '',
+        budgetSplitItems: defaultProfile.budgetSplitItems,
+        grantApplied: false,
+        phase2Attested: false
+      };
+      saveFileDb(db);
+      res.json({ email: db.user.email, name: db.user.name });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// 4. Log in a user
+app.post('/api/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return res.status(400).json({ message: 'Email and password are required.' });
+    }
+
+    if (dbMode === 'mongo') {
+      const user = await User.findOne({ email });
+      if (!user || user.password !== password) {
+        return res.status(401).json({ message: 'Invalid email or password.' });
+      }
+      res.json({ email: user.email, name: user.name, university: user.university });
+    } else {
+      const db = getFileDb();
+      if (db.user && db.user.email === email && db.user.password === password) {
+        res.json({ email: db.user.email, name: db.user.name, university: db.user.university });
+      } else if (email === 'elena@stanford.edu' && password === 'password123') {
+        res.json({ email: defaultProfile.email, name: defaultProfile.name, university: defaultProfile.university });
+      } else {
+        return res.status(401).json({ message: 'Invalid email or password.' });
+      }
     }
   } catch (error) {
     res.status(500).json({ error: error.message });

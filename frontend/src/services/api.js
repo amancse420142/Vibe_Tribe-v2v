@@ -14,16 +14,23 @@ const handleResponse = async (response) => {
 export const api = {
   // Get active user profile
   async getProfile() {
-    const response = await fetch('/api/profile');
+    const email = localStorage.getItem('userEmail') || 'elena@stanford.edu';
+    const response = await fetch('/api/profile', {
+      headers: {
+        'X-User-Email': email
+      }
+    });
     return handleResponse(response);
   },
 
   // Update user profile details
   async updateProfile(profileData) {
+    const email = localStorage.getItem('userEmail') || 'elena@stanford.edu';
     const response = await fetch('/api/profile', {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
+        'X-User-Email': email
       },
       body: JSON.stringify(profileData),
     });
