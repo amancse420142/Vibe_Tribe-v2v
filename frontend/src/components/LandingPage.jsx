@@ -137,7 +137,7 @@ export default function LandingPage({ onLogin }) {
           
           <div className="space-y-4">
             <span className="px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-mono uppercase tracking-widest font-bold inline-block">
-              Deep-tech IP attestation & Escrow
+              Two stage deep tech solution
             </span>
             <h1 className="text-3xl md:text-5xl font-black uppercase tracking-wider leading-tight text-white">
               Empowering <span className="bg-gradient-to-r from-primary via-fuchsia-500 to-accent bg-clip-text text-transparent">Women</span> to Build Their Innovations into <span className="text-fuchsia-400">Reality</span>
