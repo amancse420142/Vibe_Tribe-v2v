@@ -1,7 +1,7 @@
 // Simpler Landing Page (Reverted Design)
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sparkles, Shield, Activity, DollarSign, Users, Mail, Lock, User, ArrowRight, BookOpen, FileText } from 'lucide-react';
+import { Sparkles, Shield, Activity, DollarSign, Users, Mail, Lock, User, ArrowRight, BookOpen, FileText, Cpu, LockKeyhole } from 'lucide-react';
 
 export default function LandingPage({ onLogin }) {
   const [isLogin, setIsLogin] = useState(true);
