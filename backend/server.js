@@ -17,6 +17,12 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
+// Serve Frontend compiled production bundles
+const distPath = path.join(__dirname, '../frontend/dist');
+if (fs.existsSync(distPath)) {
+  app.use(express.static(distPath));
+}
+
 // Seed profile data
 const defaultProfile = {
   id: 'dr-elena-rostova',
@@ -128,6 +134,16 @@ app.put('/api/profile', async (req, res) => {
     }
   } catch (error) {
     res.status(500).json({ error: error.message });
+  }
+});
+
+// Wildcard route to serve React app for client-side routing
+app.get('*', (req, res) => {
+  const indexHtmlPath = path.join(__dirname, '../frontend/dist/index.html');
+  if (fs.existsSync(indexHtmlPath)) {
+    res.sendFile(indexHtmlPath);
+  } else {
+    res.status(404).send('Frontend bundle not found. Please run npm run build in frontend directory.');
   }
 });
 
