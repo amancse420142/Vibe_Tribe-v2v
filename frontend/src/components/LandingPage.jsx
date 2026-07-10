@@ -216,17 +216,17 @@ export default function LandingPage({ onLogin }) {
               <div className="flex justify-between items-start text-left">
                 <div className="space-y-1">
                   <span className="text-[10px] text-emerald-400 font-bold uppercase tracking-widest font-mono">Stage 02</span>
-                  <h3 className="text-sm font-extrabold text-white">Phase 2: Market Ready</h3>
+                  <h3 className="text-sm font-extrabold text-white">Phase 2: Production Launch</h3>
                 </div>
               </div>
               
               <p className="text-[11px] text-gray-400 leading-relaxed mt-2.5 text-left">
-                Getting it market Production ready or final project Deployment.
+                Transition your validated prototype into a production-grade application, fully optimized for final deployment and global market launch.
               </p>
               
               <div className="flex justify-between items-center text-[10px] text-gray-500 font-mono mt-4 border-t border-white/5 pt-2">
                 <span>Status</span>
-                <span className="text-emerald-400 font-bold">DEPLOYMENT READY</span>
+                <span className="text-emerald-400 font-bold">PRODUCTION READY</span>
               </div>
             </motion.div>
           </div>
