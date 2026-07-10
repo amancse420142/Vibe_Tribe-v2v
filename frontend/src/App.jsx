@@ -2254,13 +2254,44 @@ function App() {
                           const amountStr = showCounterOffer ? counterAmount.toLocaleString() : (grantTotalAmount - grantPhase1Amount).toLocaleString();
                           const equityStr = showCounterOffer ? `${counterEquity}%` : "12.5%";
                           
+                          const updatedProjects = projectsList.map(proj => {
+                            if (proj.id === activeProject) {
+                              return { ...proj, deployed: true, progress: 100 };
+                            }
+                            return proj;
+                          });
+                          setProjectsList(updatedProjects);
+                          
+                          const mergedProjects = updatedProjects.map(proj => {
+                            const state = projectStates[proj.id] || {
+                              gitUsernameInput: '',
+                              gitUser: null,
+                              gitRepos: [],
+                              selectedGitRepo: '',
+                              gitCommits: [],
+                              uploadedDocs: [],
+                              peerPapersVerified: false
+                            };
+                            return {
+                              ...proj,
+                              gitUsernameInput: state.gitUsernameInput || '',
+                              gitUser: state.gitUser || null,
+                              gitRepos: state.gitRepos || [],
+                              selectedGitRepo: state.selectedGitRepo || '',
+                              gitCommits: state.gitCommits || [],
+                              uploadedDocs: state.uploadedDocs || [],
+                              peerPapersVerified: state.peerPapersVerified || false
+                            };
+                          });
+                          
                           try {
                             const updatedProfile = await api.updateProfile({
+                              projects: mergedProjects,
                               phase2Attested: true
                             });
                             setProfile(updatedProfile);
                             setPhase2Attested(true);
-                            setToastMessage(`Your equity offer has been accepted! Phase 2 Funding of ${amountStr} USDT has been unlocked in exchange for ${equityStr} equity. Funds have been disbursed straight into your bank account!`);
+                            setToastMessage(`Your equity offer has been accepted! Phase 2 Funding of $${amountStr} USDT has been unlocked in exchange for ${equityStr} equity. Funds have been disbursed straight into your bank account!`);
                             setShowToast(true);
                             setActiveTab('deployed');
                           } catch (err) {
@@ -3047,6 +3078,12 @@ function App() {
                             ) : (
                               <span className="px-2 py-0.5 rounded bg-white/5 text-gray-500 border border-white/5 text-[9px] font-mono font-bold uppercase tracking-wider">
                                 Phase 2 Pending
+                              </span>
+                            )}
+
+                            {project.deployed && (
+                              <span className="px-2 py-0.5 rounded bg-emerald-500 text-white border border-emerald-400 text-[9px] font-mono font-black uppercase tracking-wider flex items-center gap-1 shadow-[0_0_15px_rgba(16,185,129,0.3)] animate-pulse">
+                                ✓ Deployed Successfully
                               </span>
                             )}
                           </div>

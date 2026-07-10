@@ -30,7 +30,8 @@ const UserSchema = new mongoose.Schema({
     selectedGitRepo: { type: String },
     gitCommits: { type: mongoose.Schema.Types.Mixed },
     peerPapersVerified: { type: Boolean },
-    uploadedDocs: { type: mongoose.Schema.Types.Mixed }
+    uploadedDocs: { type: mongoose.Schema.Types.Mixed },
+    deployed: { type: Boolean, default: false }
   }],
   grantTotalAmount: { type: Number, default: 50000 },
   grantPhase1Amount: { type: Number, default: 20000 },
