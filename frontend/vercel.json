@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://vibe-tribe-backend-placeholder.onrender.com/api/:path*"
+      "destination": "https://vibe-tribe-v2v.onrender.com/api/:path*"
     }
   ]
 }
