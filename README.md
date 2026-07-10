@@ -13,6 +13,7 @@ Once the prototype is verified, the platform automatically generates fractional 
 EquiPatent successfully merges FinTech and STEM by allowing female creators to showcase verifiable technical assets on a deep-tech portfolio dashboard, ultimately transforming early-stage prototypes into highly valuable, protected intellectual property.
 
 ## Important Links
+*   **checkout our platform!**: [https://vibe-tribe-v2v.vercel.app](https://vibe-tribe-v2v.vercel.app)
 
 ## Features
 
