@@ -41,6 +41,7 @@ import LandingPage from './components/LandingPage';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [profileVerified, setProfileVerified] = useState(false);
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -487,6 +488,13 @@ function App() {
       setEditBio(data.bio);
       setEditSkills(data.skills ? data.skills.join(', ') : '');
       setEditWallet(data.walletAddress || '');
+      
+      // Auto-verify profile if all required parameters are pre-filled
+      if (data.bio && data.skills && data.skills.length > 0 && data.walletAddress) {
+        setProfileVerified(true);
+      } else {
+        setProfileVerified(false);
+      }
     } catch (err) {
       console.error('Error fetching profile', err);
       setError('Could not connect to MERN backend. Server might be offline.');
@@ -646,11 +654,52 @@ function App() {
     }
   };
 
+  const handleLoginSuccess = async (regData) => {
+    setIsAuthenticated(true);
+    if (regData && regData.name) {
+      setLoading(true);
+      try {
+        const updated = await api.updateProfile({
+          name: regData.name,
+          university: regData.university,
+          walletAddress: regData.email,
+          role: 'Lead Researcher',
+          department: 'Bioengineering & Computer Science',
+          bio: '',
+          skills: []
+        });
+        setProfile(updated);
+        setEditName(updated.name);
+        setEditUniversity(updated.university);
+        setEditDepartment(updated.department || '');
+        setEditRole(updated.role || '');
+        setEditBio(updated.bio || '');
+        setEditSkills('');
+        setEditWallet(updated.walletAddress || '');
+        setProfileVerified(false);
+      } catch (err) {
+        console.error("Error setting up profile on register:", err);
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      if (profile && profile.bio && profile.skills && profile.skills.length > 0 && profile.walletAddress) {
+        setProfileVerified(true);
+      } else {
+        setProfileVerified(false);
+      }
+    }
+    
+    // Switch active tab to profile verification
+    setActiveTab('profile');
+    setActiveCard(0);
+  };
+
   if (!isAuthenticated) {
     return (
       <div className="relative min-h-screen bg-[#07080a] text-white overflow-hidden flex flex-col justify-between">
         <ParticleCanvas />
-        <LandingPage onLogin={() => setIsAuthenticated(true)} />
+        <LandingPage onLogin={handleLoginSuccess} />
       </div>
     );
   }
@@ -855,7 +904,9 @@ function App() {
                             ? '85%' 
                             : (gitUser || peerPapersVerified) 
                             ? '65%' 
-                            : '35%' 
+                            : profileVerified
+                            ? '35%' 
+                            : '15%' 
                         }}
                       />
 
@@ -872,16 +923,31 @@ function App() {
                           <p className="text-xs font-bold text-emerald-400 group-hover:text-emerald-300 transition-colors">Platform Login</p>
                         </div>
 
-                        {/* Step 2: HER Profile Verified (Completed) */}
-                        <div 
-                          onClick={() => { setActiveTab('profile'); setActiveCard(2); }}
-                          className="relative pl-7 py-0.5 cursor-pointer hover:bg-white/5 transition-all rounded-r-lg -ml-1 pr-1 group text-left"
-                        >
-                          <div className="absolute left-0 top-0.5 w-5 h-5 rounded-full bg-emerald-500 flex items-center justify-center text-[8px] text-white font-bold shrink-0 z-10 shadow-[0_0_10px_rgba(16,185,129,0.3)]">
-                            ✓
+                        {/* Step 2: HER Profile Verified (Conditional) */}
+                        {profileVerified ? (
+                          <div 
+                            onClick={() => { setActiveTab('profile'); setActiveCard(0); }}
+                            className="relative pl-7 py-0.5 cursor-pointer hover:bg-white/5 transition-all rounded-r-lg -ml-1 pr-1 group text-left"
+                          >
+                            <div className="absolute left-0 top-0.5 w-5 h-5 rounded-full bg-emerald-500 flex items-center justify-center text-[8px] text-white font-bold shrink-0 z-10 shadow-[0_0_10px_rgba(16,185,129,0.3)]">
+                              ✓
+                            </div>
+                            <p className="text-xs font-bold text-emerald-400 group-hover:text-emerald-300 transition-colors">Profile Verification</p>
                           </div>
-                          <p className="text-xs font-bold text-emerald-400 group-hover:text-emerald-300 transition-colors">Profile Verification</p>
-                        </div>
+                        ) : (
+                          <div 
+                            onClick={() => { setActiveTab('profile'); setActiveCard(0); }}
+                            className="relative pl-7 py-2 bg-gradient-to-r from-primary/20 via-primary/10 to-transparent border-l-2 border-primary rounded-r-lg -ml-2 pr-2 cursor-pointer hover:from-primary/30 transition-all text-left"
+                          >
+                            <div className="absolute left-2 top-2 w-5 h-5 rounded-full bg-primary text-white text-[9px] font-bold flex items-center justify-center font-mono shrink-0 z-10 shadow-[0_0_10px_rgba(217,70,239,0.3)]">
+                              2
+                            </div>
+                            <div>
+                              <p className="text-xs font-bold text-white leading-tight">Profile Verification</p>
+                              <span className="text-[8px] text-primary font-mono block mt-0.5 font-black">Active Step</span>
+                            </div>
+                          </div>
+                        )}
 
                         {/* Step 3: Developer & Document Sync */}
                         {(gitUser || peerPapersVerified) ? (
@@ -894,7 +960,7 @@ function App() {
                             </div>
                             <p className="text-xs font-bold text-emerald-400 group-hover:text-emerald-300 transition-colors leading-tight">Developer & Document Sync</p>
                           </div>
-                        ) : (
+                        ) : profileVerified ? (
                           <div 
                             onClick={() => setActiveTab('dashboard')}
                             className="relative pl-7 py-2 bg-gradient-to-r from-primary/20 via-primary/10 to-transparent border-l-2 border-primary rounded-r-lg -ml-2 pr-2 cursor-pointer hover:from-primary/30 transition-all text-left"
@@ -906,6 +972,13 @@ function App() {
                               <p className="text-xs font-bold text-white leading-tight">Developer & Document Sync</p>
                               <span className="text-[8px] text-primary font-mono block mt-0.5 font-black">Active Step</span>
                             </div>
+                          </div>
+                        ) : (
+                          <div className="relative pl-7 py-0.5 opacity-40 text-left">
+                            <div className="absolute left-0 top-0.5 w-5 h-5 rounded-full bg-white/10 flex items-center justify-center text-[9px] text-gray-500 font-mono shrink-0 z-10">
+                              3
+                            </div>
+                            <p className="text-xs font-bold text-gray-500 leading-tight">Developer & Document Sync</p>
                           </div>
                         )}
 
@@ -2284,8 +2357,158 @@ function App() {
                 transition={{ duration: 0.4 }}
                 className="w-full flex flex-col justify-between space-y-6 relative"
               >
-                {/* Carousel wrapper with relative anchor for floating arrows */}
-                <div className="relative w-full max-w-5xl mx-auto px-4 md:px-12">
+                {!profileVerified ? (
+                  /* Profile Attestation Check-In Form */
+                  <div className="w-full max-w-2xl mx-auto glass-card p-8 border-primary/20 bg-[#0d0e12]/80 backdrop-blur-md rounded-3xl space-y-6 text-left relative overflow-hidden shadow-neonPrimary/5">
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
+                    
+                    <div className="flex items-center gap-3 border-b border-white/5 pb-4">
+                      <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-primary to-accent flex items-center justify-center text-white shadow-neonPrimary">
+                        <User className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-black text-white uppercase tracking-wider">Profile Attestation Check-In</h3>
+                        <p className="text-[11px] text-gray-500">Provide the remaining credential tags to verify academic innovation standing.</p>
+                      </div>
+                    </div>
+
+                    <form 
+                      onSubmit={async (e) => {
+                        e.preventDefault();
+                        setSaving(true);
+                        try {
+                          const skillsArray = editSkills
+                            .split(',')
+                            .map(s => s.trim())
+                            .filter(s => s.length > 0);
+
+                          const payload = {
+                            name: editName,
+                            university: editUniversity,
+                            department: editDepartment || 'Bioengineering & Computer Science',
+                            role: editRole || 'Lead Researcher',
+                            bio: editBio,
+                            skills: skillsArray,
+                            walletAddress: editWallet
+                          };
+
+                          const updatedProfile = await api.updateProfile(payload);
+                          setProfile(updatedProfile);
+                          setProfileVerified(true);
+                          
+                          setToastMessage("Profile verified successfully! Proceeding to sync.");
+                          setShowToast(true);
+                          
+                          // Switch to Developer & Document Sync (dashboard)
+                          setActiveTab('dashboard');
+                        } catch (err) {
+                          alert('Failed to verify profile: ' + err.message);
+                        } finally {
+                          setSaving(false);
+                        }
+                      }}
+                      className="space-y-4"
+                    >
+                      {/* Name & University */}
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-1.5">
+                          <label className="text-[9px] text-gray-400 font-mono uppercase tracking-wider font-bold">Registered Name</label>
+                          <input 
+                            type="text"
+                            value={editName}
+                            onChange={(e) => setEditName(e.target.value)}
+                            className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-primary"
+                            required
+                          />
+                        </div>
+                        <div className="space-y-1.5">
+                          <label className="text-[9px] text-gray-400 font-mono uppercase tracking-wider font-bold">University Affiliation</label>
+                          <input 
+                            type="text"
+                            value={editUniversity}
+                            onChange={(e) => setEditUniversity(e.target.value)}
+                            className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-primary"
+                            required
+                          />
+                        </div>
+                      </div>
+
+                      {/* Role & Department */}
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-1.5">
+                          <label className="text-[9px] text-gray-400 font-mono uppercase tracking-wider font-bold">Academic Role</label>
+                          <input 
+                            type="text"
+                            value={editRole}
+                            onChange={(e) => setEditRole(e.target.value)}
+                            placeholder="e.g. Lead Researcher, PhD Candidate"
+                            className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-primary"
+                            required
+                          />
+                        </div>
+                        <div className="space-y-1.5">
+                          <label className="text-[9px] text-gray-400 font-mono uppercase tracking-wider font-bold">Department / Lab</label>
+                          <input 
+                            type="text"
+                            value={editDepartment}
+                            onChange={(e) => setEditDepartment(e.target.value)}
+                            placeholder="e.g. Bio-AI Lab, Computer Science"
+                            className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-primary"
+                            required
+                          />
+                        </div>
+                      </div>
+
+                      {/* Bio Biography */}
+                      <div className="space-y-1.5">
+                        <label className="text-[9px] text-gray-400 font-mono uppercase tracking-wider font-bold">Research Biography (Bio)</label>
+                        <textarea 
+                          rows={3}
+                          value={editBio}
+                          onChange={(e) => setEditBio(e.target.value)}
+                          placeholder="Describe your research focus, lab developments, or academic focus..."
+                          className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-primary resize-none"
+                          required
+                        />
+                      </div>
+
+                      {/* Technical Skills & Wallet */}
+                      <div className="space-y-1.5">
+                        <label className="text-[9px] text-gray-400 font-mono uppercase tracking-wider font-bold">Technical Skills Checklist (Comma Separated)</label>
+                        <input 
+                          type="text"
+                          value={editSkills}
+                          onChange={(e) => setEditSkills(e.target.value)}
+                          placeholder="e.g. Deep Learning, Biophysics, PyTorch, EEG signals"
+                          className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-primary font-mono"
+                          required
+                        />
+                      </div>
+
+                      <div className="space-y-1.5">
+                        <label className="text-[9px] text-gray-400 font-mono uppercase tracking-wider font-bold">Web3 Wallet / Escrow Signature Address</label>
+                        <input 
+                          type="text"
+                          value={editWallet}
+                          onChange={(e) => setEditWallet(e.target.value)}
+                          placeholder="e.g. 0xDF39A284bE03E33fcd98c23..."
+                          className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-primary font-mono"
+                          required
+                        />
+                      </div>
+
+                      <button
+                        type="submit"
+                        disabled={saving}
+                        className="w-full mt-4 py-3.5 bg-gradient-to-r from-primary to-accent text-white rounded-xl text-xs font-black uppercase tracking-widest transition-all hover:scale-[1.01] active:scale-[0.99] cursor-pointer shadow-neonPrimary/25"
+                      >
+                        {saving ? "Signing Ledger..." : "Attest Node & Verify Profile"}
+                      </button>
+                    </form>
+                  </div>
+                ) : (
+                  <>
+                    <div className="relative w-full max-w-5xl mx-auto px-4 md:px-12">
                   
                   {/* Floating Chevron Left Arrow (Middle Left) */}
                   <button
@@ -2571,6 +2794,8 @@ function App() {
                     </button>
                   </div>
                 </div>
+                  </>
+                )}
 
               </motion.div>
             )}

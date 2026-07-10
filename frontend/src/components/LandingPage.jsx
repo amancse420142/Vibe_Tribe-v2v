@@ -33,7 +33,11 @@ export default function LandingPage({ onLogin }) {
     // Simulate authenticating/validating
     setTimeout(() => {
       setLoading(false);
-      onLogin();
+      if (isLogin) {
+        onLogin();
+      } else {
+        onLogin({ name, university, email });
+      }
     }, 1200);
   };
 
