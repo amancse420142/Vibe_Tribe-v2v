@@ -728,11 +728,16 @@ function App() {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
                   
                   {/* Project 1 */}
-                  <div className="glass-card p-6 border-primary/20 flex flex-col justify-between space-y-5">
-                    <div className="space-y-2">
-                      <span className="px-2 py-0.5 rounded bg-primary/10 text-primary border border-primary/20 text-[10px] font-mono font-bold uppercase">Active • 85%</span>
-                      <h3 className="text-base font-extrabold text-white">Neural Synapse Bridge</h3>
-                      <p className="text-xs text-gray-400 leading-relaxed">Deep-learning brain-computer interface mapping cognitive signals into real-time speech synthesis patterns.</p>
+                  <div className="glass-card p-6 border-primary/20 flex flex-col justify-between space-y-4">
+                    <div className="space-y-3">
+                      <div className="w-full h-36 rounded-xl overflow-hidden border border-white/5 relative bg-darkBg/40">
+                        <img src="/neural_synapse.png" alt="Neural Synapse Bridge" className="w-full h-full object-cover" />
+                      </div>
+                      <div className="space-y-1">
+                        <span className="px-2 py-0.5 rounded bg-primary/10 text-primary border border-primary/20 text-[10px] font-mono font-bold uppercase">Active • 85%</span>
+                        <h3 className="text-base font-extrabold text-white mt-1">Neural Synapse Bridge</h3>
+                        <p className="text-xs text-gray-400 leading-relaxed">Deep-learning brain-computer interface mapping cognitive signals into real-time speech synthesis patterns.</p>
+                      </div>
                     </div>
                     <div className="space-y-3 pt-2">
                       <div className="flex flex-wrap gap-1.5">
@@ -747,11 +752,16 @@ function App() {
                   </div>
 
                   {/* Project 2 */}
-                  <div className="glass-card p-6 border-accent/20 flex flex-col justify-between space-y-5">
-                    <div className="space-y-2">
-                      <span className="px-2 py-0.5 rounded bg-accent/10 text-accent border border-accent/20 text-[10px] font-mono font-bold uppercase">Review • 40%</span>
-                      <h3 className="text-base font-extrabold text-white">Retinal Quantum Sensor</h3>
-                      <p className="text-xs text-gray-400 leading-relaxed">Sub-dermal quantum photovoltaic sensor detecting photons at ultra-low single-wavelength efficiency thresholds.</p>
+                  <div className="glass-card p-6 border-accent/20 flex flex-col justify-between space-y-4">
+                    <div className="space-y-3">
+                      <div className="w-full h-36 rounded-xl overflow-hidden border border-white/5 relative bg-darkBg/40">
+                        <img src="/quantum_sensor.png" alt="Retinal Quantum Sensor" className="w-full h-full object-cover" />
+                      </div>
+                      <div className="space-y-1">
+                        <span className="px-2 py-0.5 rounded bg-accent/10 text-accent border border-accent/20 text-[10px] font-mono font-bold uppercase">Review • 40%</span>
+                        <h3 className="text-base font-extrabold text-white mt-1">Retinal Quantum Sensor</h3>
+                        <p className="text-xs text-gray-400 leading-relaxed">Sub-dermal quantum photovoltaic sensor detecting photons at ultra-low single-wavelength efficiency thresholds.</p>
+                      </div>
                     </div>
                     <div className="space-y-3 pt-2">
                       <div className="flex flex-wrap gap-1.5">
@@ -765,11 +775,16 @@ function App() {
                   </div>
 
                   {/* Project 3 */}
-                  <div className="glass-card p-6 border-emerald-500/20 flex flex-col justify-between space-y-5">
-                    <div className="space-y-2">
-                      <span className="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-mono font-bold uppercase">Completed • 100%</span>
-                      <h3 className="text-base font-extrabold text-white">Distributed IP Oracle</h3>
-                      <p className="text-xs text-gray-400 leading-relaxed">Decentralized zero-knowledge patent attestation protocol for cryptographically signing tech transfer agreements.</p>
+                  <div className="glass-card p-6 border-emerald-500/20 flex flex-col justify-between space-y-4">
+                    <div className="space-y-3">
+                      <div className="w-full h-36 rounded-xl overflow-hidden border border-white/5 relative bg-darkBg/40">
+                        <img src="/ip_oracle.png" alt="Distributed IP Oracle" className="w-full h-full object-cover" />
+                      </div>
+                      <div className="space-y-1">
+                        <span className="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-mono font-bold uppercase">Completed • 100%</span>
+                        <h3 className="text-base font-extrabold text-white mt-1">Distributed IP Oracle</h3>
+                        <p className="text-xs text-gray-400 leading-relaxed">Decentralized zero-knowledge patent attestation protocol for cryptographically signing tech transfer agreements.</p>
+                      </div>
                     </div>
                     <div className="space-y-3 pt-2">
                       <div className="flex flex-wrap gap-1.5">
