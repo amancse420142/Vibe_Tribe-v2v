@@ -134,7 +134,7 @@ export default function LandingPage({ onLogin }) {
               Empowering <span className="bg-gradient-to-r from-primary via-fuchsia-500 to-accent bg-clip-text text-transparent">Women</span> to Build Their Innovations into <span className="text-fuchsia-400">Reality</span>
             </h1>
             <p className="text-sm text-gray-400 leading-relaxed max-w-2xl">
-              We empower female STEM innovators by providing milestone-based capital for prototypes and crowdfunding legal fees for patents. **EquiPatent** helps you turn university lab research into protected commercial tech.
+              We empower female STEM innovators by providing milestone-based capital for prototypes and preparing projects for production and deployment. **EquiPatent** helps you turn university lab research into market-ready tech.
             </p>
           </div>
 
@@ -216,17 +216,17 @@ export default function LandingPage({ onLogin }) {
               <div className="flex justify-between items-start text-left">
                 <div className="space-y-1">
                   <span className="text-[10px] text-emerald-400 font-bold uppercase tracking-widest font-mono">Stage 02</span>
-                  <h3 className="text-sm font-extrabold text-white">Phase 2: Fractional IP</h3>
+                  <h3 className="text-sm font-extrabold text-white">Phase 2: Market Ready</h3>
                 </div>
               </div>
               
               <p className="text-[11px] text-gray-400 leading-relaxed mt-2.5 text-left">
-                Unlock fractional IP patent rights to cover legal patent filing fees, in exchange for micro-royalties on future licensing agreements.
+                Getting it market Production ready or final project Deployment.
               </p>
               
               <div className="flex justify-between items-center text-[10px] text-gray-500 font-mono mt-4 border-t border-white/5 pt-2">
-                <span>Royalty Ledger</span>
-                <span className="text-emerald-400 font-bold">FRACTIONAL IP</span>
+                <span>Status</span>
+                <span className="text-emerald-400 font-bold">DEPLOYMENT READY</span>
               </div>
             </motion.div>
           </div>
@@ -287,7 +287,7 @@ export default function LandingPage({ onLogin }) {
                 <h3 className="text-lg font-black text-white uppercase tracking-wider">
                   {isLogin ? "Authenticate Credentials" : "Initialize Developer Profile"}
                 </h3>
-                <p className="text-[11px] text-gray-500">Access your deep-tech innovation workspace and patent vaults.</p>
+                <p className="text-[11px] text-gray-500">Access your deep-tech innovation workspace and deployment dashboard.</p>
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-4">
