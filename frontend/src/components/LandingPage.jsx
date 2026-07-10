@@ -73,7 +73,11 @@ export default function LandingPage({ onLogin }) {
         onLogin({ name, university, email });
       }
     } catch (err) {
-      setErrorMsg(err.message);
+      if (!isLogin) {
+        setErrorMsg('makesure that you are already registered!');
+      } else {
+        setErrorMsg(err.message);
+      }
     } finally {
       setLoading(false);
     }
@@ -392,7 +396,7 @@ export default function LandingPage({ onLogin }) {
                     </>
                   ) : (
                     <>
-                      "Get Started"
+                      Get Started
                       <ArrowRight className="w-4 h-4" />
                     </>
                   )}
