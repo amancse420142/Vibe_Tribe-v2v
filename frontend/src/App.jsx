@@ -37,8 +37,10 @@ import {
 } from 'lucide-react';
 import { api } from './services/api';
 import { ParticleCanvas } from './components/ParticleCanvas';
+import LandingPage from './components/LandingPage';
 
 function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -643,6 +645,15 @@ function App() {
       handlePrevCard();
     }
   };
+
+  if (!isAuthenticated) {
+    return (
+      <div className="relative min-h-screen bg-[#07080a] text-white overflow-hidden flex flex-col justify-between">
+        <ParticleCanvas />
+        <LandingPage onLogin={() => setIsAuthenticated(true)} />
+      </div>
+    );
+  }
 
   return (
     <div className="relative min-h-screen bg-darkBg text-white font-sans flex flex-col justify-between p-6 sm:p-8 overflow-hidden select-none">
