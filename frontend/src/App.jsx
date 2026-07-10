@@ -296,7 +296,16 @@ function App() {
   };
 
   // Dynamic getters for rendering
-  const currentProjectState = projectStates[activeProject];
+  const currentProjectState = projectStates[activeProject] || {
+    gitUsernameInput: '',
+    gitUser: null,
+    gitRepos: [],
+    selectedGitRepo: '',
+    gitCommits: [],
+    gitError: null,
+    uploadedDocs: [],
+    peerPapersVerified: false
+  };
   const gitUser = currentProjectState.gitUser;
   const gitUsernameInput = currentProjectState.gitUsernameInput;
   const gitRepos = currentProjectState.gitRepos;
@@ -1300,9 +1309,9 @@ function App() {
                             onChange={(e) => setActiveProject(e.target.value)}
                             className="bg-black/60 border border-white/10 rounded-full pl-8 pr-10 py-2.5 text-xs font-bold text-white focus:outline-none focus:border-[#d946ef]/50 cursor-pointer appearance-none relative z-20 w-full sm:min-w-[210px] shadow-inner"
                           >
-                            <option value="synapse">Neural Synapse Bridge</option>
-                            <option value="sensor">Retinal Quantum Sensor</option>
-                            <option value="oracle">Distributed IP Oracle</option>
+                            {projectsList.map(proj => (
+                              <option key={proj.id} value={proj.id}>{proj.name}</option>
+                            ))}
                           </select>
                           {/* Custom chevron indicator */}
                           <ChevronDown className="absolute right-3.5 w-4 h-4 text-gray-400 pointer-events-none z-30" />
@@ -1505,7 +1514,7 @@ function App() {
                       </span>
                     </div>
                     <h1 className="text-xl font-black text-white uppercase tracking-wider">
-                      {activeProject === 'synapse' ? 'Neural Synapse Bridge' : activeProject === 'sensor' ? 'Retinal Quantum Sensor' : 'Distributed IP Oracle'}
+                      {(projectsList.find(p => p.id === activeProject) || { name: 'Neural Synapse Bridge' }).name}
                     </h1>
                     <p className="text-xs text-gray-400">Request funding from investors & sponsors for your project phases.</p>
                   </div>
@@ -1517,9 +1526,9 @@ function App() {
                       onChange={(e) => { setActiveProject(e.target.value); setGrantApplied(false); }} 
                       className="bg-darkBg border border-primary/30 rounded-xl px-4 py-2 text-xs text-white font-bold focus:outline-none focus:border-accent cursor-pointer"
                     >
-                      <option value="synapse">Neural Synapse Bridge</option>
-                      <option value="sensor">Retinal Quantum Sensor</option>
-                      <option value="oracle">Distributed IP Oracle</option>
+                      {projectsList.map(proj => (
+                        <option key={proj.id} value={proj.id}>{proj.name}</option>
+                      ))}
                     </select>
 
                     <button 
