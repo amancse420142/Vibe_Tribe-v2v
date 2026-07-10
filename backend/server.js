@@ -35,7 +35,42 @@ const defaultProfile = {
   skills: ['Deep Learning', 'Biophysics', 'PyTorch', 'Proteomics', 'Rust-Bio'],
   walletAddress: '0xDF39A284bE03E33fcd98c23C8A081D019cE3a60A',
   innovationScore: 94,
-  verified: true
+  verified: true,
+  projects: [
+    {
+      id: 'synapse',
+      name: 'Neural Synapse Bridge',
+      description: 'Deep-learning brain-computer interface mapping cognitive signals into real-time speech synthesis patterns.',
+      image: '/synapse_real.jpg',
+      tags: ['PyTorch', 'EEG Signals', 'Python'],
+      progress: 85,
+      phase1Verified: true,
+      phase2Verified: false,
+      documents: ['neural_synapse_mapping_draft.pdf']
+    },
+    {
+      id: 'sensor',
+      name: 'Retinal Quantum Sensor',
+      description: 'Sub-dermal quantum photovoltaic sensor detecting photons at ultra-low single-wavelength efficiency thresholds.',
+      image: '/sensor_real.jpg',
+      tags: ['Quantum', 'Optoelectronics'],
+      progress: 40,
+      phase1Verified: false,
+      phase2Verified: false,
+      documents: ['quantum_retinal_clinical_abstract.pdf']
+    },
+    {
+      id: 'oracle',
+      name: 'Distributed IP Oracle',
+      description: 'Decentralized zero-knowledge patent attestation protocol for cryptographically signing tech transfer agreements.',
+      image: '/oracle_real.jpg',
+      tags: ['Solidity', 'ZK-Snarks', 'IPFS'],
+      progress: 100,
+      phase1Verified: true,
+      phase2Verified: true,
+      documents: []
+    }
+  ]
 };
 
 // Local JSON File Database Fallback
@@ -85,9 +120,20 @@ app.get('/api/profile', async (req, res) => {
     if (dbMode === 'mongo') {
       const profile = await User.findOne({ id: 'dr-elena-rostova' });
       if (!profile) return res.status(404).json({ message: 'Profile not found' });
+      
+      // Auto-populate projects if empty/missing
+      if (!profile.projects || profile.projects.length === 0) {
+        profile.projects = defaultProfile.projects;
+        await profile.save();
+      }
       res.json(profile);
     } else {
       const db = getFileDb();
+      // Auto-populate projects if empty/missing
+      if (!db.user.projects || db.user.projects.length === 0) {
+        db.user.projects = defaultProfile.projects;
+        saveFileDb(db);
+      }
       res.json(db.user);
     }
   } catch (error) {
@@ -98,7 +144,7 @@ app.get('/api/profile', async (req, res) => {
 // 2. Update user profile
 app.put('/api/profile', async (req, res) => {
   try {
-    const { name, university, department, role, bio, skills, walletAddress, innovationScore } = req.body;
+    const { name, university, department, role, bio, skills, walletAddress, innovationScore, projects } = req.body;
     
     if (dbMode === 'mongo') {
       const profile = await User.findOne({ id: 'dr-elena-rostova' });
@@ -112,6 +158,7 @@ app.put('/api/profile', async (req, res) => {
       if (skills !== undefined) profile.skills = skills;
       if (walletAddress !== undefined) profile.walletAddress = walletAddress;
       if (innovationScore !== undefined) profile.innovationScore = innovationScore;
+      if (projects !== undefined) profile.projects = projects;
       
       await profile.save();
       res.json(profile);
@@ -127,6 +174,7 @@ app.put('/api/profile', async (req, res) => {
       if (skills !== undefined) user.skills = skills;
       if (walletAddress !== undefined) user.walletAddress = walletAddress;
       if (innovationScore !== undefined) user.innovationScore = innovationScore;
+      if (projects !== undefined) user.projects = projects;
       
       db.user = user;
       saveFileDb(db);

@@ -11,7 +11,18 @@ const UserSchema = new mongoose.Schema({
   skills: [{ type: String }],
   walletAddress: { type: String, default: '0xDF...A28' },
   innovationScore: { type: Number, default: 94 },
-  verified: { type: Boolean, default: true }
+  verified: { type: Boolean, default: true },
+  projects: [{
+    id: { type: String },
+    name: { type: String },
+    description: { type: String },
+    image: { type: String },
+    tags: [{ type: String }],
+    progress: { type: Number },
+    phase1Verified: { type: Boolean },
+    phase2Verified: { type: Boolean },
+    documents: [{ type: String }]
+  }]
 }, { timestamps: true });
 
 const User = mongoose.model('User', UserSchema);

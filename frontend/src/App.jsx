@@ -198,13 +198,44 @@ function App() {
     setIsProjectModalOpen(true);
   };
 
+  const saveProjectsToBackend = async (newProjectsList, newProjectStates = projectStates) => {
+    try {
+      const mergedProjects = newProjectsList.map(proj => {
+        const state = newProjectStates[proj.id] || {
+          gitUsernameInput: '',
+          gitUser: null,
+          gitRepos: [],
+          selectedGitRepo: '',
+          gitCommits: [],
+          uploadedDocs: [],
+          peerPapersVerified: false
+        };
+        return {
+          ...proj,
+          gitUsernameInput: state.gitUsernameInput || '',
+          gitUser: state.gitUser || null,
+          gitRepos: state.gitRepos || [],
+          selectedGitRepo: state.selectedGitRepo || '',
+          gitCommits: state.gitCommits || [],
+          uploadedDocs: state.uploadedDocs || [],
+          peerPapersVerified: state.peerPapersVerified || false
+        };
+      });
+      const updatedProfile = await api.updateProfile({ projects: mergedProjects });
+      setProfile(updatedProfile);
+    } catch (err) {
+      console.error("Error saving projects to database:", err);
+    }
+  };
+
   const handleSaveProject = (e) => {
     e.preventDefault();
     if (!projName.trim() || !projDesc.trim()) return;
     const parsedTags = projTags.split(',').map(t => t.trim()).filter(Boolean);
 
+    let updatedProjectsList = [];
     if (editingProjectId) {
-      setProjectsList(prev => prev.map(proj => {
+      updatedProjectsList = projectsList.map(proj => {
         if (proj.id === editingProjectId) {
           return {
             ...proj,
@@ -219,7 +250,7 @@ function App() {
           };
         }
         return proj;
-      }));
+      });
     } else {
       const newId = `project-${Date.now()}`;
       const newProj = {
@@ -233,12 +264,16 @@ function App() {
         documents: projDocs,
         image: projImage || '/ip_oracle.png'
       };
-      setProjectsList(prev => [...prev, newProj]);
+      updatedProjectsList = [...projectsList, newProj];
     }
+    
+    setProjectsList(updatedProjectsList);
+    saveProjectsToBackend(updatedProjectsList, projectStates);
+    
     setIsProjectModalOpen(false);
     setToastMessage(editingProjectId ? "Project updated successfully!" : "New project registered successfully!");
     setShowToast(true);
-  };
+  }
 
   const handleAddProjectDoc = (e) => {
     const file = e.target.files[0];
@@ -312,14 +347,29 @@ function App() {
         size: `${(file.size / (1024 * 1024)).toFixed(1)} MB`,
         status: 'Verified Successfully'
       };
-      setProjectStates(prev => ({
-        ...prev,
+      const newState = {
+        ...projectStates,
         [activeProject]: {
-          ...prev[activeProject],
-          uploadedDocs: [...prev[activeProject].uploadedDocs, newDoc],
+          ...projectStates[activeProject],
+          uploadedDocs: [...projectStates[activeProject].uploadedDocs, newDoc],
           peerPapersVerified: true
         }
-      }));
+      };
+      setProjectStates(newState);
+      
+      const updatedProjectsList = projectsList.map(proj => {
+        if (proj.id === activeProject) {
+          return {
+            ...proj,
+            phase2Verified: true,
+            progress: 100
+          };
+        }
+        return proj;
+      });
+      setProjectsList(updatedProjectsList);
+      saveProjectsToBackend(updatedProjectsList, newState);
+      
       setUploadingDoc(false);
     }, 2000);
   };
@@ -381,23 +431,45 @@ function App() {
       }
       const reposData = await reposRes.json();
 
-      setProjectStates(prev => ({
-        ...prev,
+      // Fetch commits for the first repo to include in state
+      let commitsData = [];
+      if (reposData.length > 0) {
+        try {
+          const firstRepo = reposData[0].name;
+          const commitsRes = await fetch(`https://api.github.com/repos/${gitUsernameInput}/${firstRepo}/commits?per_page=3`);
+          if (commitsRes.ok) {
+            commitsData = await commitsRes.json();
+          }
+        } catch (e) {
+          console.warn("Commits fetch failed on initial sync, using empty list");
+        }
+      }
+
+      const newState = {
+        ...projectStates,
         [activeProject]: {
-          ...prev[activeProject],
+          ...projectStates[activeProject],
           gitUser: userData,
           gitRepos: reposData,
           selectedGitRepo: reposData.length > 0 ? reposData[0].name : '',
-          gitCommits: [],
+          gitCommits: commitsData,
           gitError: null
         }
-      }));
+      };
+      setProjectStates(newState);
 
-      // If they have repos, select the first one and fetch its commits
-      if (reposData.length > 0) {
-        const firstRepo = reposData[0].name;
-        await fetchCommits(gitUsernameInput, firstRepo, activeProject);
-      }
+      const updatedProjectsList = projectsList.map(proj => {
+        if (proj.id === activeProject) {
+          return {
+            ...proj,
+            phase1Verified: true,
+            progress: Math.max(proj.progress, 90)
+          };
+        }
+        return proj;
+      });
+      setProjectsList(updatedProjectsList);
+      saveProjectsToBackend(updatedProjectsList, newState);
     } catch (err) {
       console.warn('GitHub API failed, falling back to simulated verification...', err);
       // Fallback to high-quality simulated verification if offline or API is rate-limited
@@ -430,17 +502,31 @@ function App() {
         }
       ];
 
-      setProjectStates(prev => ({
-        ...prev,
+      const newState = {
+        ...projectStates,
         [activeProject]: {
-          ...prev[activeProject],
+          ...projectStates[activeProject],
           gitUser: simulatedUser,
           gitRepos: simulatedRepos,
           selectedGitRepo: simulatedRepos[0].name,
           gitCommits: simulatedCommits,
           gitError: 'Rate-Limited / Offline: Loaded Verified Simulation Mode'
         }
-      }));
+      };
+      setProjectStates(newState);
+
+      const updatedProjectsList = projectsList.map(proj => {
+        if (proj.id === activeProject) {
+          return {
+            ...proj,
+            phase1Verified: true,
+            progress: Math.max(proj.progress, 90)
+          };
+        }
+        return proj;
+      });
+      setProjectsList(updatedProjectsList);
+      saveProjectsToBackend(updatedProjectsList, newState);
     } finally {
       setGitVerifying(false);
     }
@@ -448,23 +534,45 @@ function App() {
 
   const handleRepoChange = async (e) => {
     const repoName = e.target.value;
-    setProjectStates(prev => ({
-      ...prev,
-      [activeProject]: {
-        ...prev[activeProject],
-        selectedGitRepo: repoName
-      }
-    }));
+    
+    // Fetch commits for selected repo
+    let commitsData = [];
     if (gitUser) {
-      await fetchCommits(gitUser.login, repoName, activeProject);
+      try {
+        const commitsRes = await fetch(`https://api.github.com/repos/${gitUser.login}/${repoName}/commits?per_page=3`);
+        if (commitsRes.ok) {
+          commitsData = await commitsRes.json();
+        }
+      } catch (err) {
+        commitsData = [
+          { 
+            sha: '0ec9becb3d7b72bffb2021e6727911bc', 
+            commit: { 
+              message: `Mock Sync: Active commit validation on ${repoName}`, 
+              author: { name: gitUser.name || gitUser.login, date: new Date().toISOString() } 
+            }
+          }
+        ];
+      }
     }
+
+    const newState = {
+      ...projectStates,
+      [activeProject]: {
+        ...projectStates[activeProject],
+        selectedGitRepo: repoName,
+        gitCommits: commitsData
+      }
+    };
+    setProjectStates(newState);
+    saveProjectsToBackend(projectsList, newState);
   };
 
   const handleDisconnectGit = () => {
-    setProjectStates(prev => ({
-      ...prev,
+    const newState = {
+      ...projectStates,
       [activeProject]: {
-        ...prev[activeProject],
+        ...projectStates[activeProject],
         gitUser: null,
         gitRepos: [],
         selectedGitRepo: '',
@@ -472,13 +580,51 @@ function App() {
         gitUsernameInput: '',
         gitError: null
       }
-    }));
+    };
+    setProjectStates(newState);
+
+    const updatedProjectsList = projectsList.map(proj => {
+      if (proj.id === activeProject) {
+        return {
+          ...proj,
+          phase1Verified: false,
+          progress: Math.max(0, proj.progress - 50)
+        };
+      }
+      return proj;
+    });
+    setProjectsList(updatedProjectsList);
+    saveProjectsToBackend(updatedProjectsList, newState);
   };
 
   const fetchProfile = async () => {
     try {
       const data = await api.getProfile();
       setProfile(data);
+      
+      // Initialize projects from database if present
+      if (data.projects && data.projects.length > 0) {
+        setProjectsList(data.projects);
+        
+        // Populate projectStates from data.projects
+        const updatedStates = {};
+        data.projects.forEach(proj => {
+          updatedStates[proj.id] = {
+            gitUsernameInput: proj.gitUsernameInput || '',
+            gitUser: proj.gitUser || null,
+            gitRepos: proj.gitRepos || [],
+            selectedGitRepo: proj.selectedGitRepo || '',
+            gitCommits: proj.gitCommits || [],
+            gitError: null,
+            uploadedDocs: proj.uploadedDocs || [],
+            peerPapersVerified: proj.peerPapersVerified || false
+          };
+        });
+        setProjectStates(prev => ({
+          ...prev,
+          ...updatedStates
+        }));
+      }
       
       // Initialize edit fields
       setEditName(data.name);
