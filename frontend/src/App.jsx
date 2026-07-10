@@ -40,7 +40,9 @@ import { ParticleCanvas } from './components/ParticleCanvas';
 import LandingPage from './components/LandingPage';
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    return localStorage.getItem('isAuthenticated') === 'true';
+  });
   const [profileVerified, setProfileVerified] = useState(false);
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -801,6 +803,7 @@ function App() {
   };
 
   const handleLoginSuccess = async (regData) => {
+    localStorage.setItem('isAuthenticated', 'true');
     setIsAuthenticated(true);
     if (regData && regData.name) {
       setLoading(true);
@@ -952,13 +955,25 @@ function App() {
               </motion.button>
             </div>
             
-            <button
-              onClick={() => setIsModalOpen(true)}
-              className="text-sm text-accent hover:text-white transition-all flex items-center gap-1.5 font-bold cursor-pointer border border-accent/30 bg-accent/5 hover:bg-accent/15 px-3.5 py-1.5 rounded-xl mt-1.5 shadow-neonAccent/5 hover:shadow-neonAccent/20"
-            >
-              <Edit3 className="w-3.5 h-3.5 text-accent" />
-              Edit Profile
-            </button>
+            <div className="flex gap-2 mt-1.5">
+              <button
+                onClick={() => setIsModalOpen(true)}
+                className="text-xs text-accent hover:text-white transition-all flex items-center gap-1.5 font-bold cursor-pointer border border-accent/30 bg-accent/5 hover:bg-accent/15 px-3.5 py-1.5 rounded-xl shadow-neonAccent/5 hover:shadow-neonAccent/20"
+              >
+                <Edit3 className="w-3.5 h-3.5 text-accent" />
+                Edit Profile
+              </button>
+              <button
+                onClick={() => {
+                  localStorage.removeItem('isAuthenticated');
+                  setIsAuthenticated(false);
+                }}
+                className="text-xs text-red-400 hover:text-white transition-all flex items-center gap-1.5 font-bold cursor-pointer border border-red-500/30 bg-red-500/5 hover:bg-red-500/15 px-3.5 py-1.5 rounded-xl shadow-neonRed/5 hover:shadow-neonRed/20"
+              >
+                <LogOut className="w-3.5 h-3.5 text-red-400" />
+                Log Out
+              </button>
+            </div>
           </div>
         )}
       </header>
